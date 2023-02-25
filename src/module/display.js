@@ -82,6 +82,7 @@ export default class Interact {
 
   clearAllCompleted = () => {
     this.lists = this.lists.filter((todo) => !todo.completed);
+    sortList(this.lists);
     savedTodos(this.lists);
     this.display();
   }
