@@ -1,105 +1,106 @@
+/* eslint-disable import/no-cycle */
 import './style.css';
 import morevert from './images/more-vert.svg';
 import refresh from './images/autorenew.svg';
 import add from './images/add.svg';
+import display from './module/display.js';
+import updateTask from './module/update.js';
+import addTask from './module/addTask.js';
+import removeTask from './module/remove.js';
 
 const todaysTodo = document.querySelector('.todays-todo');
 const addTodo = document.querySelector('.add-todo');
-const todoList = document.querySelector('.todo-list');
 const completeAll = document.querySelector('.completeAll');
 
-
-let todos = [{ description: 'Wash clothes', completed: false, id: '1' },
-  { description: 'Make dinner', completed: false, id: '2' },
-  { description: 'wash dishes', completed: false, id: '3' },
-  { description: 'clean house', completed: false, id: '4' }];
-
-render();
-
-class CreateTodo {
-  constructor(description, id) {
-    this.description = description;
-    this.id = id;
-    this.completed = false;
-  }
-}
-
 function render() {
-  todoList.innerHTML = '';
   todaysTodo.innerHTML = `<h4 class="title">Today's To do</h4>
   <button class="refreshBtn"><img src="${refresh}" alt=""></button>`;
-  addTodo.innerHTML = `<input type="text" class="input-todo" placeholder="Add to your list...">
+  addTodo.innerHTML = `<input type="text" class="input-todo required" placeholder="Add to your list...">
   <button class="addBtn"><img src="${add}" alt=""></button>`;
-  todos.forEach((todo) => {
-    const list = document.createElement('li');
-    list.className = 'list';
-    list.innerHTML = `
-    <input id="${todo.id}" class="check" type="checkbox">
-    <span class="todo-title">${todo.description}</span>
-    <button class="more-btn"><img id="${todo.id}" src="${morevert}" alt="more-vertical-icon"></button>
-    `;
-    todoList.appendChild(list);
-  });
+
   completeAll.innerHTML = `<input class="check" type="checkbox">
   <span class="todo-title bold">Complete To Do list project</span>
   <button class="more-btn"><img src="${morevert}" alt="more-vertical-icon"></button>`;
-
-  const moreBtn = document.querySelectorAll('.more-btn > img');
-  moreBtn.forEach(function(more) {
-    more.addEventListener('click', function(e) {
-      moreVert();
-     
-      // const removed = e.target;
-      // const id = removed.id;
-      // removeTask(id);
-      // render();
-    })
-  });
 }
+
+render();
+
+display();
 
 const lists = document.querySelectorAll('.list');
-
-function moreVert() {
-  console.log('hello');
-  const elem = document.createElement('div');
-  elem.className = 'click';
-  elem.innerHTML = 
-    `<div class="click-more">
-      <button class="delete fa-sharp fa-solid fa-trash"></button>
-      <button class="edit fa-regular fa-pen-to-square"></button>
-    </div>`
-  lists.appendChild(elem);
-}
-
-moreVert();
-
-  function addTask() {
-    const newDescription = inputTodo.value;
-    const id = `${new Date().getTime()}`;
-  const newTodo = new CreateTodo(newDescription, id);
-  todos.push(newTodo);
-}
-
-function removeTask(idToDelete) {
-  todos = todos.filter(function(todo) {
-    if(todo.id === idToDelete) {
-      return false;
-    }
-    else {
-      return true;
-    }
-  })
-}
-
-
 const inputTodo = document.querySelector('.input-todo');
 const addBtn = document.querySelector('.addBtn');
 
+function updateTodo(e) {
+  const idUpdate = e.target.id;
+  const newValue = document.querySelector('.new-input').value;
+  updateTask(idUpdate, newValue);
+  display();
+}
 
-addBtn.addEventListener('click', function(e){
-  addTask();
-  render();
+function editTodo(idTask) {
+  lists.forEach((list) => {
+    if (list.childNodes[2].firstChild.id === idTask) {
+      const elem = document.createElement('div');
+      elem.className = 'edit-cont';
+      let el = document.createElement('input');
+      el.type = 'text';
+      el.className = 'new-input';
+      elem.appendChild(el);
+      el = document.createElement('button');
+      el.className = 'update';
+      el.id = idTask;
+      el.innerText = 'Update';
+      el.onclick = updateTodo;
+      elem.appendChild(el);
+      list.replaceChild(elem, list.childNodes[1]);
+      list.removeChild(list.childNodes[2]);
+    }
+  });
+}
+
+function editTask(e) {
+  const idTask = e.target.id;
+  editTodo(idTask);
+}
+
+function deleteTask(e) {
+  const removed = e.target;
+  const { id } = removed;
+  removeTask(id);
+  display();
+  window.location.reload();
+}
+
+function moreButton(idClicked) {
+  lists.forEach((list) => {
+    if (list.childNodes[2].firstChild.id === idClicked) {
+      const elem = document.createElement('div');
+      elem.className = 'click-more';
+      let el = document.createElement('button');
+      el.classList = 'delete fa-sharp fa-solid fa-trash';
+      el.id = idClicked;
+      el.onclick = deleteTask;
+      elem.appendChild(el);
+      el = document.createElement('button');
+      el.classList = 'edit fa-regular fa-pen-to-square';
+      el.id = idClicked;
+      el.onclick = editTask;
+      elem.appendChild(el);
+      list.replaceChild(elem, list.childNodes[2]);
+    }
+  });
+}
+
+export default function clickedBtn(e) {
+  const idClicked = e.target.id;
+  moreButton(idClicked);
+}
+
+addBtn.addEventListener('click', () => {
+  if (inputTodo.value !== '') {
+    addTask(inputTodo);
+    display();
+    window.location.reload();
+  }
 });
-
-
-

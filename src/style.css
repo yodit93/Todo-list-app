@@ -126,3 +126,24 @@ body {
 .bold {
   font-weight: bold;
 }
+
+.delete,
+.edit {
+  margin-left: 10px;
+}
+
+.edit-cont {
+  width: 100%;
+}
+
+.new-input {
+  padding: 8px 0;
+  width: 70%;
+  margin-right: 10%;
+  font-size: 1.3rem;
+  color: rgb(129 120 120);
+}
+
+.update {
+  padding: 8px 15px;
+}
