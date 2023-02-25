@@ -1,4 +1,4 @@
-import { getTodos, sortTodo, savedTodos } from './storage.js';
+import { getTodos, sortList, savedTodos } from './storage.js';
 
 export default function removeTask(idToDelete) {
   let todos = getTodos();
@@ -9,6 +9,6 @@ export default function removeTask(idToDelete) {
 
     return true;
   });
-  sortTodo(todos);
+  sortList(todos);
   savedTodos(todos);
 }

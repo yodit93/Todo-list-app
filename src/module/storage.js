@@ -16,4 +16,10 @@ const sortTodo = (todos) => {
   todos.sort((a, b) => a.index - b.index);
 };
 
-export { savedTodos, getTodos, sortTodo };
+const sortList = (todos) => {
+  sortTodo(todos);
+  for (let i = 0; i < todos.length; i += 1) {
+    todos[i].index = i + 1;
+  }
+};
+export { savedTodos, getTodos, sortList };
