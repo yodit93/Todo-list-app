@@ -1,7 +1,7 @@
 import './style.css';
 import refresh from './images/autorenew.svg';
 import add from './images/add.svg';
-import Interact from './module/display.js';
+import Interact from './module/interact.js';
 import { getTodos } from './module/storage.js';
 
 const todos = getTodos();
@@ -24,8 +24,12 @@ const inputTodo = document.querySelector('.input-todo');
 const addBtn = document.querySelector('.addBtn');
 
 addBtn.addEventListener('click', () => {
+  const value = inputTodo.value;
   if (inputTodo.value !== '') {
-    interact.addTask(inputTodo);
+    interact.addTask(value);
   }
   inputTodo.value = '';
 });
+
+const clearBtn = document.querySelector('.clearAllBtn');
+clearBtn.addEventListener('click', interact.clearAllCompleted);

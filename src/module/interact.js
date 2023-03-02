@@ -6,8 +6,6 @@ import CreateTodo from './crete-todo.js';
 export default class Interact {
   constructor(lists) {
     this.lists = lists;
-    this.clearBtn = document.querySelector('.clearAllBtn');
-    this.clearBtn.addEventListener('click', this.clearAllCompleted);
     this.todoList = document.querySelector('.todo-list');
   }
 
@@ -28,10 +26,9 @@ export default class Interact {
     parent.replaceChild(elem, parent.childNodes[1]);
   }
 
-  addTask = (inputTodo) => {
-    const newDescription = inputTodo.value;
+  addTask = (value) => {
     const index = this.lists.length + 1;
-    const newTodo = new CreateTodo(newDescription, index);
+    const newTodo = new CreateTodo(value, index);
     this.lists.push(newTodo);
     sortList(this.lists);
     savedTodos(this.lists);
