@@ -24,7 +24,7 @@ const inputTodo = document.querySelector('.input-todo');
 const addBtn = document.querySelector('.addBtn');
 
 addBtn.addEventListener('click', () => {
-  const value = inputTodo.value;
+  const { value } = inputTodo;
   if (inputTodo.value !== '') {
     interact.addTask(value);
   }
