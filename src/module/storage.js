@@ -21,5 +21,6 @@ const sortList = (todos) => {
   for (let i = 0; i < todos.length; i += 1) {
     todos[i].index = i + 1;
   }
+  return todos;
 };
 export { savedTodos, getTodos, sortList };

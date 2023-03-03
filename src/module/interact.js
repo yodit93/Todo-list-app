@@ -4,10 +4,8 @@ import { sortList, savedTodos } from './storage.js';
 import CreateTodo from './crete-todo.js';
 
 export default class Interact {
-  constructor(lists) {
+  constructor(lists = []) {
     this.lists = lists;
-    this.clearBtn = document.querySelector('.clearAllBtn');
-    this.clearBtn.addEventListener('click', this.clearAllCompleted);
     this.todoList = document.querySelector('.todo-list');
   }
 
@@ -28,10 +26,9 @@ export default class Interact {
     parent.replaceChild(elem, parent.childNodes[1]);
   }
 
-  addTask = (inputTodo) => {
-    const newDescription = inputTodo.value;
+  addTask = (value) => {
     const index = this.lists.length + 1;
-    const newTodo = new CreateTodo(newDescription, index);
+    const newTodo = new CreateTodo(value, index);
     this.lists.push(newTodo);
     sortList(this.lists);
     savedTodos(this.lists);
@@ -50,34 +47,43 @@ export default class Interact {
     this.moreButton(parent, idClicked);
   }
 
+  updateTask = (idUpdate, newValue) => {
+    const list = this.lists.find((todo) => Number(todo.index) === Number(idUpdate));
+    list.description = newValue;
+    savedTodos(this.lists);
+    this.display();
+    return this.lists;
+  }
+
   updateTodo = (e) => {
     const idUpdate = e.target.id;
     const input = document.querySelector('.new-input');
     const newValue = input.value;
-    const m = this.lists.find((todo) => Number(todo.index) === Number(idUpdate));
-    m.description = newValue;
-    savedTodos(this.lists);
-    this.display();
+    this.updateTask(idUpdate, newValue);
   };
 
   deleteTask = (e) => {
     const removed = e.target;
     const { id } = removed;
-    removeTask(id);
+    this.lists = removeTask(id);
     this.display();
-    window.location.reload();
   };
 
-  isCompleted = (e) => {
-    const completeTodo = e.target;
+  isChecked = (completeTodo, idChecked) => {
     this.lists = this.lists.map((todo) => {
-      if (JSON.stringify(todo.index) === completeTodo.dataset.id) {
+      if (JSON.stringify(todo.index) === idChecked) {
         todo.completed = completeTodo.checked;
-        e.target.parentNode.childNodes[1].style.textDecoration = 'line-through';
+        completeTodo.parentNode.childNodes[1].style.textDecoration = 'line-through';
       }
       return todo;
     });
     savedTodos(this.lists);
+  }
+
+  isCompleted = (e) => {
+    const completeTodo = e.target;
+    const idChecked = completeTodo.dataset.id;
+    this.isChecked(completeTodo, idChecked);
   }
 
   clearAllCompleted = () => {
@@ -105,7 +111,8 @@ export default class Interact {
   }
 
   display = () => {
-    this.todoList.innerHTML = '';
+    const todoList = document.querySelector('.todo-list');
+    todoList.innerHTML = '';
     this.lists.forEach((todo) => {
       const list = document.createElement('li');
       list.className = 'list';
@@ -134,7 +141,7 @@ export default class Interact {
       el.onclick = this.clickedBtn;
       elem.appendChild(el);
       list.appendChild(elem);
-      this.todoList.appendChild(list);
+      todoList.appendChild(list);
     });
   }
 }
