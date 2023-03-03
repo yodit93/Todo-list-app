@@ -78,4 +78,22 @@ describe('Checke add, update, ischecked and clear all completed', () => {
     expect(todos[0].completed).toBeTruthy();
     expect(todos[1].completed).toBeFalsy();
   });
+  test('Check wether completed tasks are removed or not', () => {
+    document.body.innerHTML = '<div><ul class="todo-list"></ul></div>';
+    // Add two tasks for checking
+    const tasks = [{ description: 'task1', index: 1, completed: false },
+      { description: 'task2', index: 2, completed: false }];
+    const interact = new Interact([]);
+    tasks.forEach((task) => interact.addTask(task.description));
+    // selecting first checkbox element
+    const checkbox = document.querySelectorAll('.check');
+    const completeTodo = checkbox[0];
+    // assign true value for the first checkbox
+    completeTodo.checked = true;
+    const idChecked = '1';
+    interact.isChecked(completeTodo, idChecked);
+    interact.clearAllCompleted();
+    const lists = document.querySelectorAll('.list');
+    expect(lists).toHaveLength(1);
+  });
 });
