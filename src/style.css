@@ -6,15 +6,21 @@
 
 body {
   background-color: rgb(250, 250, 250);
+  background-image: url(./images/back3.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* height: 100%; */
 }
 
 .todo-list-cont {
   width: 70%;
   margin: auto;
+  margin-top: 30%;
   background-color: white;
   margin-top: 10%;
   box-shadow: 0 3px 9px rgb(0, 0, 0, 0.15);
   border-radius: 5px;
+  background-color: #f3f9fc;
 }
 
 .todays-todo,
@@ -69,7 +75,7 @@ body {
   display: flex;
   align-items: center;
   padding: 0% 3%;
-  border-bottom: 1px solid rgb(216, 214, 214);
+  border-bottom: 1px solid #e89b62;;
   box-shadow: 1px 1px 3px rgb(0, 0, 0, 0.15);
   height: 60px;
 }

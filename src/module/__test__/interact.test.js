@@ -34,7 +34,7 @@ Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 describe('Checke add, update, ischecked and clear all completed', () => {
   test('Check wether new task is added to the todo-list', () => {
-    document.body.innerHTML = '<div><ul class="todo-list"><li></li></ul></div>';
+    document.body.innerHTML = '<div><ul class="todo-list"></ul></div>';
     const interact = new Interact([]);
     const value = 'list added';
     interact.addTask(value);
