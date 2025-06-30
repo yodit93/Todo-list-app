@@ -50,7 +50,7 @@
 
 > Link to deployed project.
 
-- [Live Demo Link](https://yodit93.github.io/Todo-list-app/dist/)
+- [Live Demo Link](https://todo-list-app-two-virid.vercel.app/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
